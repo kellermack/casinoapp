@@ -38,12 +38,7 @@
     
         <h1>Sort by Casino Name</h1>
     
-    <?php
-
-        $sql = "SELECT * FROM vegas";
-        $result = mysqli_query($conn, $sql);
-        
-      ?>
+    
         
         
         <form action="displayResults.php" method="post">
