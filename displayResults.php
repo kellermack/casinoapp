@@ -1,6 +1,8 @@
 <?php
 // I feel like all of this needs to be moved to the index.php file. //
 
+// And it keeps throwing fatal error//
+
 $category_id_esc = $dbName->escape_string($category_id);
 
 $query = "SELECT * FROM vegas
