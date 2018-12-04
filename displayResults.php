@@ -32,7 +32,6 @@ $row_count = $result->num_rows;
 </tr>
 <?php endfor; ?>
 =======
-
     $dbServername ="localhost";
     $dbusername = "root";
     $dbpassword = "";
@@ -48,4 +47,3 @@ $row_count = $result->num_rows;
    
     
 
->>>>>>> origin/master
