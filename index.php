@@ -43,7 +43,7 @@
         $sql = "SELECT * FROM vegas";
         $result = mysqli_query($conn, $sql);
         
-      ?>
+    ?>
         
         
         <form action="displayResults.php" method="post">
@@ -205,7 +205,7 @@
             <input type="submit" name="search"><br>
         </div> 
         
-       </form>
+        </form>
                 
                 
                 
