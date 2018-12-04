@@ -1,4 +1,5 @@
 <?php
+
 // I feel like all of this needs to be moved to the index.php file. //
 
 // And it keeps throwing fatal error//
@@ -30,3 +31,21 @@ $row_count = $result->num_rows;
     <td><?php echo $casino['casinoID']; ?></td>
 </tr>
 <?php endfor; ?>
+=======
+
+    $dbServername ="localhost";
+    $dbusername = "root";
+    $dbpassword = "";
+    $dbName = "vegaspoker";
+    
+    $conn = mysqli_connect($dbServername, $dbusername, $dbpassword, $dbName);
+
+       
+
+    
+    
+    
+   
+    
+
+>>>>>>> origin/master
