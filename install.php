@@ -8,6 +8,12 @@
 require('Database.class.php');
 
 $db = new Database();
-echo "Starting import...\n";
-$db->install();
-echo "Done\n";
+
+echo "Starting install...\n";
+
+try {
+    $db->install();
+    echo "Install completed successfully\n";
+} catch (Exception $e) {
+    echo "Import failed!\n{$e->getMessage()}\n";
+}

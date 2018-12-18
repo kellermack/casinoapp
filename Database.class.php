@@ -6,43 +6,44 @@ class Database
     const TOURNAMENT_TABLE = 'tournaments';
     const IMPORT_FOLDER = 'import';
     const ARCHIVE_FOLDER = 'archive';
+    const CONFIG_FILE = 'config.php';
 
     private $connection;
     private $importPath;
     private $archivePath;
+    private $config;
 
     /**
      * Database constructor.
      */
     public function __construct()
     {
-        // load our custom settings from config.php file
-        // code editors will say this is an undefined variable, but it's set in config.php so just ignore that
-        // then use our settings to connect to the DB
-        require('config.php');
-        $this->connection = new mysqli($dbConfig['server'], $dbConfig['user'], $dbConfig['password'],
-            $dbConfig['database']);
+        // load our custom settings from config file
+        $this->config = include(self::CONFIG_FILE);
 
-        // now we load the import directory information
-        $this->importPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . self::IMPORT_FOLDER;
-
-        // if the import directory doesn't exist, we should create it
-        $this->initDirectory($this->importPath);
-
-        // same with our archive directory
-        $this->archivePath = $this->importPath . DIRECTORY_SEPARATOR . self::ARCHIVE_FOLDER;
-        $this->initDirectory($this->archivePath);
+        // then use it to connect to the database
+        $this->connectToDb();
     }
 
     /**
-     * Creates a directory if it doesn't exist
+     * Connect to mysql database
      *
-     * @param string $directory
-     * @return bool
+     * @throws Exception
      */
-    private function initDirectory($directory)
-    {
-        return @mkdir($directory, 0777, true);
+    private function connectToDb(){
+        // make sure all needed info is present
+        if (!isset(
+            $this->config['server'],
+            $this->config['user'],
+            $this->config['password'],
+            $this->config['database']
+        )) {
+            throw new Exception('Config file is missing param(s)');
+        }
+
+        // connect to the DB
+        $this->connection = new mysqli($this->config['server'], $this->config['user'], $this->config['password'],
+            $this->config['database']);
     }
 
     /**
@@ -59,7 +60,7 @@ class Database
      *
      * @throws Exception
      */
-    public function createTournamentTable()
+    private function createTournamentTable()
     {
         $sql = 'CREATE TABLE IF NOT EXISTS ' . self::TOURNAMENT_TABLE . '
             (
@@ -91,7 +92,7 @@ class Database
             // TODO: some kind of error handling?
             throw new Exception('Database error: ' . $this->connection->error);
         }
-        return $this->connection->query($sql);
+        return $result;
     }
 
     /**
@@ -101,6 +102,8 @@ class Database
      */
     public function import()
     {
+        // load info about the import and archive directories
+        $this->loadDirectoryInfo();
 
         // pull in all csv files in our import directory
         $csvFiles = glob($this->importPath . DIRECTORY_SEPARATOR . '*.csv');
@@ -158,10 +161,39 @@ class Database
         $this->query($sql);
 
         // ok cool, now let's archive it so we don't import it again
-        // we will move it into an archive folder, adding a timestamp to make sure the filename is unique
-        $newFilename = $this->archivePath . DIRECTORY_SEPARATOR . basename($importFile, ".php")
-            . date('Ymd-His') . '.csv';
-        rename($importFile, $newFilename);
+        $this->archive($importFile);
+    }
+
+    /**
+     * Generate directory paths for import and archive directories
+     */
+    private function loadDirectoryInfo()
+    {
+        // do nothing if we've already loaded this info
+        if ($this->importPath) {
+            return;
+        }
+
+        // load the import directory information
+        $this->importPath = dirname(__FILE__) . DIRECTORY_SEPARATOR . self::IMPORT_FOLDER;
+
+        // if the import directory doesn't exist, we should create it
+        $this->initDirectory($this->importPath);
+
+        // same with our archive directory
+        $this->archivePath = $this->importPath . DIRECTORY_SEPARATOR . self::ARCHIVE_FOLDER;
+        $this->initDirectory($this->archivePath);
+    }
+
+    /**
+     * Creates a directory if it doesn't exist
+     *
+     * @param string $directory
+     * @return bool
+     */
+    private function initDirectory($directory)
+    {
+        return @mkdir($directory, 0777, true);
     }
 
     /**
@@ -207,6 +239,19 @@ class Database
         }
 
         return $data;
+    }
+
+    /**
+     * Appends the date and time to a filename, then moves the file into the archive directory
+     *
+     * @param string $file
+     */
+    private function archive($file)
+    {
+        // we will move it into an archive folder, adding a timestamp to make sure the filename is unique
+        $newFilename = $this->archivePath . DIRECTORY_SEPARATOR . basename($file, ".php")
+            . date('Ymd-His') . '.csv';
+        rename($file, $newFilename);
     }
 
 }
