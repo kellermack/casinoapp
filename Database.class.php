@@ -3,6 +3,21 @@
 class Database
 {
 
+    function getCasinoNames() {
+       $casinoNames = array ('Aria', 'Binions', 'Nugget', 'Orleans', 'PH', 'Wynn', 'Venetian', 'Rio', 'Orleans');
+         return ($casinoNames);      
+        }
+
+
+        
+        
+     
+     
+    
+    
+    
+    
+    
     const TOURNAMENT_TABLE = 'tournaments';
     const IMPORT_FOLDER = 'import';
     const ARCHIVE_FOLDER = 'archive';

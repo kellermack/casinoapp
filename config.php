@@ -9,7 +9,7 @@
 // see: https://www.abeautifulsite.net/a-better-way-to-write-config-files-in-php for more info
 
 return [
-    'server' => '127.0.0.1',
+    'server' => 'localhost',
     'user' => 'root',
     'password' => '',
     'database' => 'vegaspoker',

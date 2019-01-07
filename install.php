@@ -7,6 +7,8 @@
 
 require('Database.class.php');
 
+
+
 $db = new Database();
 
 echo "Starting install...\n";
