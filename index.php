@@ -1,9 +1,33 @@
 <?php
 
-    require('database.php');
+    require('Database.class.php');
+    require('displayResults.php');
+   
+    
+    
+    
+    if (!isset($casino)) {$casino = ''; }
+    if (!isset($dates)) {$dates = ''; }
+    if (!isset($buyIn)) {$buyIn = ''; }
+    
+    
+    
+    
+    
 
     
+    
+    
+   
+            
+    
+    
+
+
 ?>
+
+    
+
 
 
 
@@ -29,7 +53,11 @@
         
     
 <body>
-        
+     
+  
+
+    
+    <link rel="stylesheet" type="text/css" href="newcss.css" />
     
         <h1>2019 Las Vegas Poker Donkfest</h1>
     
@@ -38,12 +66,32 @@
     
         <h1>Sort by Casino Name</h1>
     
+    <?php
+        
+        $server = 'localhost';
+        $username = 'root';
+        $password = '';
+        $dbName = 'vegaspoker';
     
+        $conn = mysqli_connect($server, $username, $password, $dbName);
+    
+        $result = $conn->query($sql);
+    
+    
+    
+    
+    
+        $sql = "SELECT DISTINCT casino, FROM tournaments";
         
+        $database = new Database();
+        $casinoNames = $database->getCasinoNames();
+            foreach($casinoNames as $casinoName){
+            echo "<option value=\"$casinoName\">$casinoName</option>"; 
+    }
+    ?>    
+        <form method="post" action="displayResults.php">
         
-        <form action="displayResults.php" method="post">
-        
-        <select name="casinoName">
+        <select name="casino[]">
 		<option value="-All-">-All-</option>
 		<option value="Aria">Aria</option>
 		<option value="Binions">Binions</option>
@@ -53,14 +101,31 @@
 		<option value="Rio">Rio</option>
 		<option value="Venetian">Venetian</option>
 		<option value="Wynn">Wynn</option>
-        </select>  
+        </select>
+
+    
+
+        
+        
+         <div id="buttons">
+            <label>&nbsp;</label>
+            <input type="submit" name="casino">
+                
+        </div>   
+                
+        </form>  
+                
+       
+            
+            
+            
+            
+            
+            
         
        
-        <div id="buttons">
-            <label>&nbsp;</label>
-            <input type="submit" name="search"><br>
-        </div>   
-        </form>
+       
+        
                     
     
                     
@@ -79,7 +144,7 @@
         
         
         
-        <form action="displayResults.php" method="post">
+        <form action="index.php" method="post">
         
         <select name="Month">
 		<option value="1">1</option>
@@ -206,7 +271,7 @@
                 
         <h4>Sort by Buy In</h4>
         
-        <form action="displayResults.php" method="post">
+        <form action="index.php" method="post">
         
         
         <div id="data">
