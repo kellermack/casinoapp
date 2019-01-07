@@ -1,10 +1,10 @@
 <?php
     //setting default values at page load
-    if (!isset($buyIn)) { $buyIn = ''; }
-    if (!isset($prizePool)) { $prizePool = ''; }
-    if (!isset($bigBlinds)) { $bigBlinds = ''; }
-    if (!isset($averageBlinds)) { $averageBlinds = ''; }
-    if (!isset($positionsPaid)) { $positionsPaid = ''; }
+    if (!isset($buyIn)) { $buyIn = '0'; }
+    if (!isset($prizePool)) { $prizePool = '0'; }
+    if (!isset($bigBlinds)) { $bigBlinds = '0'; }
+    if (!isset($averageBlinds)) { $averageBlinds = '0'; }
+    if (!isset($positionsPaid)) { $positionsPaid = '0'; }
 ?>
 
 
