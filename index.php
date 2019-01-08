@@ -1,5 +1,9 @@
+<?php
+
+include_once 'Database.class.php';
 
 
+?>
 
 <!DOCTYPE html>
 
@@ -31,29 +35,33 @@
         <h1>Sort by Casino Name</h1>
     
     <?php
+            $server = 'localhost';
+            $password = '';
+            $username = 'root';
+            $dbName = 'vegaspoker';
+
+
+
+
+
+         function getCasinoNames($casinoNames) {
+            global $dbName;
+             $query = "SELECT DISTINCT casino, cost FROM tournaments";
+             $statement = $dbName->prepare($query);
+             $statement->bindvalue(':casinoNames', $casinoNames);
+             $statement->execute();
+             $results = $statement->fetchall();
+             $statement->closeCursor();
+             return $results;
+             
+        }
         
-        $server = 'localhost';
-        $username = 'root';
-        $password = '';
-        $dbName = 'vegaspoker';
-    
-        $conn = mysqli_connect($server, $username, $password, $dbName);
-    
-        $result = $conn->query($sql);
+       
     
     
-    
-    
-    
-        $sql = "SELECT DISTINCT casino, FROM tournaments";
         
-        $database = new Database();
-        $casinoNames = $database->getCasinoNames();
-            foreach($casinoNames as $casinoName){
-            echo "<option value=\"$casinoName\">$casinoName</option>"; 
-    }
-    ?>    
-        <form method="post" action="displayResults.php">
+    ?>       
+        <form action= "index.php" method="post">
         
         <select name="casino[]">
 		<option value="-All-">-All-</option>
@@ -77,27 +85,7 @@
                 
         </div>   
                 
-        </form>  
-                
-       
-            
-            
-            
-            
-            
-            
-        
-       
-       
-        
-                    
-    
-                    
-                    
-    
-                
-        
-        
+        </form> 
         <br>
         <br>
         
@@ -159,52 +147,116 @@
 		<option value="31">31</option>
         </select> / 
       
-    </head>
-<body>
-    <main>
-            <h1>Rebuy Calculator</h1>
-            <?php if (!empty($errorMessage)) { ?>
-                <p class="error"><?php echo htmlspecialchars($errorMessage); ?></p>
-            <?php } ?>
-            
-                <form action="displayCalculation.php" method="post">
-            
-            <div id="data">
-                <label>Buy In:</label>
-                <input type="text" name="buyIn"
-                    value="<?php echo htmlspecialchars($buyIn); ?>">
-                <br>
-                
-                <label>Prize Pool:</label>
-                <input type="text" name="prizePool"
-                    value="<?php echo htmlspecialchars($prizePool); ?>">
-                <br>
-                
-                <label>Positions Paid:</label>
-                <input type="text" name="positionsPaid"
-                    value="<?php echo htmlspecialchars($positionsPaid); ?>">
-                <br>
-                
-                <label>Big Blinds:</label>
-                <input type="text" name="bigBlinds"
-                    value="<?php echo htmlspecialchars($bigBlinds); ?>">                    
-                <br>
-                
-                <label>Average Blinds:</label>
-                <input type="text" name="averageBlinds"
-                    value="<?php echo htmlspecialchars($averageBlinds); ?>">
-            </div>    
-                
-            <div id="buttons"> 
-                <label>&nbsp;</label>
-                <input type="submit" value="calculate EV"><br>
-            </div>
-            
+    
+
+          
         
-         </form>  
         
-    </main>
+        <select name="Year">
+                <option value="2018" selected>2018</option>
+		<option value="2019">2019</option>
+        </select>
+                <br>
+		to
+
+                <br>
+
+
+
+	<select name="Month">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7" selected>7</option>
+		<option value="8">8</option>
+		<option value="9">9</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+        </select> /
+
+	<select name="Day">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7">7</option>
+		<option value="8">8</option>
+		<option value="9">9</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+		<option value="13">13</option>
+		<option value="14">14</option>
+		<option value="15">15</option>
+		<option value="16">16</option>
+		<option value="17">17</option>
+		<option value="18">18</option>
+		<option value="19">19</option>
+		<option value="20">20</option>
+		<option value="21">21</option>
+		<option value="22">22</option>
+		<option value="23">23</option>
+		<option value="24">24</option>
+		<option value="25">25</option>
+		<option value="26">26</option>
+		<option value="27">27</option>
+		<option value="28">28</option>
+		<option value="29" selected>29</option>
+		<option value="30">30</option>
+		<option value="31">31</option>
+        </select> / 
+
+        <select name="Year">
+		<option value="2018" selected>2018</option>
+		<option value="2019">2019</option>
+        </select>  
+
+        <div id="button">
+            <label>&nbsp;</label>
+            <input type="submit" name="search"><br>
+        </div> 
+
+       
+
+        </form>
+
+        <h4>Sort by Buy In</h4>
+
+        <form action="index.php" method="post">
+
+
+        <div id="data">
+            <label>Minimum Buy In:</label>
+            <input type="number" name="Min">
+
+            <br>
+
+        </div>
+        <br>
+        <div id="data">
+            <label>Maximum Buy In:</label>
+            <input type="number" name="Max">
+
+            <br>
+
+        </div>
+
+        <div id="buttons">
+            <label>&nbsp;</label>
+            <input type="submit" name="search"><br>
+        </div> 
         
-</body>
+        
+        
+        
+  
+        
+    </body>
 </html>         
          
