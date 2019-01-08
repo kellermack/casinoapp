@@ -35,10 +35,7 @@ include_once 'Database.class.php';
         <h1>Sort by Casino Name</h1>
     
     <?php
-            $server = 'localhost';
-            $password = '';
-            $username = 'root';
-            $dbName = 'vegaspoker';
+            
 
 
 
