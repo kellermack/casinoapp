@@ -1,7 +1,17 @@
 <?php
 
-include_once 'Database.class.php';
+// load DB
+require('Database.class.php');
+$database = new Database();
 
+// get casino names
+$casinoNames = $database->getCasinoNames();
+
+// selected casino name if they submitted the form
+$selectedCasino = '';
+if (isset($_POST['casinoName'])) {
+    $selectedCasino = $_POST['casinoName'];
+}
 
 ?>
 
@@ -9,80 +19,59 @@ include_once 'Database.class.php';
 
 <html>
 
-    
 <head>
-        <meta charset="UTF-8">
-        <title>Las Vegas Summer Poker Tour</title>
-        <link rel="stylesheet" type="text/css" href="newcss.css" />
-</head> 
+    <meta charset="UTF-8">
+    <title>Las Vegas Summer Poker Tour</title>
+    <link rel="stylesheet" type="text/css" href="newcss.css"/>
+</head>
 
-       
-           
-        
-    
 <body>
-     
-  
 
-    
-    <link rel="stylesheet" type="text/css" href="newcss.css" />
-    
-        <h1>2019 Las Vegas Poker Donkfest</h1>
-    
-    
-    
-    
-        <h1>Sort by Casino Name</h1>
-    
-    <?php
-            
+<h1>2019 Las Vegas Poker Donkfest</h1>
 
+<h1>Sort by Casino Name</h1>
 
+<form action="index.php" method="post">
 
-
-
-         function getCasinoNames($casinoNames) {
-            global $dbName;
-             $query = "SELECT DISTINCT casino, cost FROM tournaments";
-             $statement = $dbName->prepare($query);
-             $statement->bindvalue(':casinoNames', $casinoNames);
-             $statement->execute();
-             $results = $statement->fetchall();
-             $statement->closeCursor();
-             return $results;
-             
+    <!-- it's good to have labels for your form elements -->
+    <label for="casinoName">Choose your casino</label>
+    <br>
+    <select id="casinoName" name="casinoName">
+        <!-- set the default "all" option to 0 so if they pick all it comes through as just "0" and is easier to work with -->
+        <option value="0">-All-</option>
+        <?php
+        // loop through the casino names
+        foreach ($casinoNames as $casinoName) {
+            // here we will add selected to the <option> html tag if this is our selected casino
+            // this way the dropdown doesn't reset every time we submit the form
+            $selected = '';
+            if ($selectedCasino == $casinoName) {
+                $selected = 'selected';
+            }
+            echo "<option value=\"$casinoName\" $selected>$casinoName</option>";
         }
-        
-       
-    
-    
-        
-    ?>       
-        <form action= "index.php" method="post">
-        
-        <select name="casino[]">
-		<option value="-All-">-All-</option>
-		<option value="Aria">Aria</option>
-		<option value="Binions">Binions</option>
-		<option value="Nugget">Nugget</option>
-		<option value="Orleans">Orleans</option>
-		<option value="PH">PH</option>
-		<option value="Rio">Rio</option>
-		<option value="Venetian">Venetian</option>
-		<option value="Wynn">Wynn</option>
-        </select>
+        ?>
+    </select>
 
-    
+    <div id="buttons">
+        <input type="submit" name="search"><br>
+    </div>
 
-        
-        
-         <div id="buttons">
-            <label>&nbsp;</label>
-            <input type="submit" name="casino">
-                
-        </div>   
-                
-        </form> 
+    <div>
+        <?php
+        // an example showing we know what was selected
+        // we can do an if here because $selectedCasino will be null if nothing was submitted
+        // or 0 if they picked -ALL-
+        // null and 0 are both evaluated as false in an if, so this only runs if they picked an actual casino
+        if ($selectedCasino) {
+            echo "You chose $selectedCasino!";
+        }
+        ?>
+    </div>
+</form>
+<!-- end of jason edits. we don't need all the forms on this page, they should be combined into one
+    that way we can just send all the filters they select at the same time -->
+
         <br>
         <br>
         

@@ -47,6 +47,34 @@ class Database
     }
 
     /**
+     * Returns an array of all the casino names in our tournament table
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getCasinoNames()
+    {
+        // make the sql query
+        $sql = 'SELECT DISTINCT casino FROM ' . self::TOURNAMENT_TABLE;
+
+        // run it
+        $result = $this->query($sql);
+
+        // get an empty array to hold the results
+        $casinos = [];
+
+        // loop through the results
+        foreach ($result as $row) {
+            // results come back one row at a time
+            // each row is an array with the column names as the array keys
+            $casinos[] = $row['casino']; // grabs the casino column value from each row and puts it in our array
+        }
+
+        // return the result
+        return $casinos;
+    }
+
+    /**
      * Create table and import all in one step
      */
     public function install()
