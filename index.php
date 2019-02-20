@@ -50,6 +50,31 @@ if (isset($_POST['casinoName'])) {
             }
             echo "<option value=\"$casinoName\" $selected>$casinoName</option>";
         }
+	     
+        if($res = mysqli_query($conn, $sql)){ 
+            if(mysqli_num_rows($res) > 0){ 
+                echo "<table><tr><th>id</th><th>grouping</th><th>casino</th><th>cost</th><th>game</th><th>schedule</th>
+                <th>fee_percent</th><th>s_points</th><th>notes</th></tr>";
+            echo "<tr>"; 
+                
+                 
+            echo "</tr>"; 
+        while($row = mysqli_fetch_array($res)){ 
+            echo "<tr><td>". $row["id"]. "</td><td>". $row["grouping"]."</td><td>"
+                    . $row["casino"]. "</td><td>". $row["cost"]. 
+                        "</td><td>". $row["game"]. "</td><td>". $row["schedule"]."</td><td>".
+        $row["fee_percent"]."</td><td>". $row["s_points"]."</td><td>". $row["notes"]."</tr>";
+                
+            echo "</tr>"; 
+        } 
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
         ?>
     </select>
 
