@@ -1,259 +1,131 @@
 <?php
-
-include_once 'Database.class.php';
-
-
+// load DB
+require('Database.class.php');
+$database = new Database();
+// get casino names
+$casinoNames = $database->getCasinoNames();
+// selected casino name if they submitted the form
+$selectedCasino = '';
+if (isset($_POST['casinoName'])) {
+    $selectedCasino = $_POST['casinoName'];
+}
 ?>
 
 <!DOCTYPE html>
 
 <html>
 
-    
 <head>
-        <meta charset="UTF-8">
-        <title>Las Vegas Summer Poker Tour</title>
-        <link rel="stylesheet" type="text/css" href="newcss.css" />
-</head> 
-
-       
-           
-        
+    <meta charset="UTF-8">
+    <title>Las Vegas Summer Poker Tour</title>
+    <style>
+    table, th, td {
+    border: 1px solid black;
+}
+</style>
     
+</head>
+
 <body>
+
+<h1>2019 Las Vegas Poker Donkfest</h1>
+
+<h1>Sort by Casino Name</h1>
+
+<form action="index.php" method="post">
      
-  
+                           
+                           
+                    
+    
+    
+    
 
-    
-    <link rel="stylesheet" type="text/css" href="newcss.css" />
-    
-        <h1>2019 Las Vegas Poker Donkfest</h1>
-    
-    
-    
-    
-        <h1>Sort by Casino Name</h1>
-    
-    <?php
-            
-
-
-
-
-
-         function getCasinoNames($casinoNames) {
-            global $dbName;
-             $query = "SELECT DISTINCT casino, cost FROM tournaments";
-             $statement = $dbName->prepare($query);
-             $statement->bindvalue(':casinoNames', $casinoNames);
-             $statement->execute();
-             $results = $statement->fetchall();
-             $statement->closeCursor();
-             return $results;
-             
+    <!-- it's good to have labels for your form elements -->
+    <label for="casinoName">Choose your casino</label>
+    <br>
+    <select id="casinoName" name="casinoName">
+        <!-- set the default "all" option to 0 so if they pick all it comes through as just "0" and is easier to work with -->
+        <option value="0">-All-</option>
+        
+        <?php
+        // loop through the casino names
+        foreach ($casinoNames as $casinoName) {
+            // here we will add selected to the <option> html tag if this is our selected casino
+            // this way the dropdown doesn't reset every time we submit the form
+            $selected = '';
+            if ($selectedCasino == $casinoName) {
+                $selected = 'selected';
+            }
+            echo "<option value=\"$casinoName\" $selected>$casinoName</option>";
         }
-        
-       
-    
-    
-        
-    ?>       
-        <form action= "index.php" method="post">
-        
-        <select name="casino[]">
-		<option value="-All-">-All-</option>
-		<option value="Aria">Aria</option>
-		<option value="Binions">Binions</option>
-		<option value="Nugget">Nugget</option>
-		<option value="Orleans">Orleans</option>
-		<option value="PH">PH</option>
-		<option value="Rio">Rio</option>
-		<option value="Venetian">Venetian</option>
-		<option value="Wynn">Wynn</option>
-        </select>
+        ?>
+    </select>
 
-    
+    <div id="buttons">
+        <input type="submit" name="casino"><br>
+    </div>
 
-        
-        
-         <div id="buttons">
-            <label>&nbsp;</label>
-            <input type="submit" name="casino">
-                
-        </div>   
-                
-        </form> 
-        <br>
-        <br>
-        
-        
-        <h2>Sort by Date</h2>
-        
-        <br>
-        
-        
-        
-        <form action="index.php" method="post">
-        
-        <select name="Month">
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="5" selected>5</option>
-		<option value="6">6</option>
-		<option value="7">7</option>
-		<option value="8">8</option>
-		<option value="9">9</option>
-		<option value="10">10</option>
-		<option value="11">11</option>
-		<option value="12">12</option>
-        </select> / 
-		
-        <select name="Day">
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="5">5</option>
-		<option value="6">6</option>
-		<option value="7">7</option>
-		<option value="8">8</option>
-		<option value="9">9</option>
-		<option value="10">10</option>
-		<option value="11">11</option>
-		<option value="12">12</option>
-		<option value="13">13</option>
-		<option value="14" selected>14</option>
-		<option value="15">15</option>
-		<option value="16">16</option>
-		<option value="17">17</option>
-		<option value="18">18</option>
-		<option value="19">19</option>
-		<option value="20">20</option>
-		<option value="21">21</option>
-		<option value="22">22</option>
-		<option value="23">23</option>
-		<option value="24">24</option>
-		<option value="25">25</option>
-		<option value="26">26</option>
-		<option value="27">27</option>
-		<option value="28">28</option>
-		<option value="29">29</option>
-		<option value="30">30</option>
-		<option value="31">31</option>
-        </select> / 
-      
-    
-
-          
-        
-        
-        <select name="Year">
-                <option value="2018" selected>2018</option>
-		<option value="2019">2019</option>
-        </select>
-                <br>
-		to
-
-                <br>
-
-
-
-	<select name="Month">
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="5">5</option>
-		<option value="6">6</option>
-		<option value="7" selected>7</option>
-		<option value="8">8</option>
-		<option value="9">9</option>
-		<option value="10">10</option>
-		<option value="11">11</option>
-		<option value="12">12</option>
-        </select> /
-
-	<select name="Day">
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="5">5</option>
-		<option value="6">6</option>
-		<option value="7">7</option>
-		<option value="8">8</option>
-		<option value="9">9</option>
-		<option value="10">10</option>
-		<option value="11">11</option>
-		<option value="12">12</option>
-		<option value="13">13</option>
-		<option value="14">14</option>
-		<option value="15">15</option>
-		<option value="16">16</option>
-		<option value="17">17</option>
-		<option value="18">18</option>
-		<option value="19">19</option>
-		<option value="20">20</option>
-		<option value="21">21</option>
-		<option value="22">22</option>
-		<option value="23">23</option>
-		<option value="24">24</option>
-		<option value="25">25</option>
-		<option value="26">26</option>
-		<option value="27">27</option>
-		<option value="28">28</option>
-		<option value="29" selected>29</option>
-		<option value="30">30</option>
-		<option value="31">31</option>
-        </select> / 
-
-        <select name="Year">
-		<option value="2018" selected>2018</option>
-		<option value="2019">2019</option>
-        </select>  
-
-        <div id="button">
-            <label>&nbsp;</label>
-            <input type="submit" name="search"><br>
-        </div> 
-
-       
-
-        </form>
-
-        <h4>Sort by Buy In</h4>
-
-        <form action="index.php" method="post">
-
-
-        <div id="data">
-            <label>Minimum Buy In:</label>
-            <input type="number" name="Min">
-
-            <br>
-
-        </div>
-        <br>
-        <div id="data">
-            <label>Maximum Buy In:</label>
-            <input type="number" name="Max">
-
-            <br>
-
-        </div>
-
-        <div id="buttons">
-            <label>&nbsp;</label>
-            <input type="submit" name="search"><br>
-        </div> 
-        
-        
-        
-        
+    <div>
+        <?php
+        // an example showing we know what was selected
+        // we can do an if here because $selectedCasino will be null if nothing was submitted
+        // or 0 if they picked -ALL-
+        // null and 0 are both evaluated as false in an if, so this only runs if they picked an actual casino
+        if ($selectedCasino) {
+            echo "You chose $selectedCasino!";
+        }
+        ?>
+ 
+        <?php
+        $conn = mysqli_connect("localhost", "root", "", "vegaspoker"); 
   
+            if($conn === false){ 
+                 die("ERROR: Could not connect. " 
+                . mysqli_connect_error()); 
+} 
         
+        $sql = "SELECT * FROM tournaments WHERE cost < 500";
+        
+        
+       
+       
+        if($res = mysqli_query($conn, $sql)){ 
+            if(mysqli_num_rows($res) > 0){ 
+                echo "<table><tr><th>id</th><th>grouping</th><th>casino</th><th>cost</th><th>game</th><th>schedule</th>
+                <th>fee_percent</th><th>s_points</th><th>notes</th></tr>";
+            echo "<tr>"; 
+                
+                 
+            echo "</tr>"; 
+        while($row = mysqli_fetch_array($res)){ 
+            echo "<tr><td>". $row["id"]. "</td><td>". $row["grouping"]."</td><td>"
+                    . $row["casino"]. "</td><td>". $row["cost"]. 
+                        "</td><td>". $row["game"]. "</td><td>". $row["schedule"]."</td><td>".
+        $row["fee_percent"]."</td><td>". $row["s_points"]."</td><td>". $row["notes"]."</tr>";
+                
+            echo "</tr>"; 
+        } 
+        echo "</table>"; 
+        mysqli_free_result($res); 
+    } else{ 
+        echo "No Matching records are found."; 
+    } 
+        } else{ 
+         echo "ERROR: Could not able to execute $sql. "  
+                                . mysqli_error($conn); 
+} 
+  
+mysqli_close($conn); 
+?> 
+          
+
+
+
+    <!-- end of jason edits. we dont need all the forms on this page, they should be combined into one
+    that way we can just send all the filters they select at the same time -->
+
+   </form>      
     </body>
 </html>         
          
