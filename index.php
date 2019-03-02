@@ -34,13 +34,6 @@ if (isset($_POST['casinoName'])) {
 
 <form action="index.php" method="post">
      
-                           
-                           
-                    
-    
-    
-    
-
     <!-- it's good to have labels for your form elements -->
     <label for="casinoName">Choose your casino</label>
     <br>
