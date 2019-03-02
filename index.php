@@ -78,7 +78,7 @@ if (isset($_POST['casinoName'])) {
                 . mysqli_connect_error()); 
 } 
         
-        $sql = "SELECT * FROM tournaments WHERE cost < 500";
+        $sql = "SELECT * FROM tournaments";
         
         
        
