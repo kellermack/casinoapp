@@ -11,36 +11,35 @@
  *
  * @author kelle
  */
-class Generator {
-    
-    public function getTable($data){
+<?php
+
+
+ 
+class CasinoTable {
+    public $data = array(); 
+    public function getTable($data = ''){
+        
+        if (is_array($data)){
+             
+             
+          $table = '<table>';
+            $table .= '<tr><th>[id, grouping, casino, game, schedule, cost, fee_percent, s_points, notes]</th></tr>';
+                foreach ($data as $row) {
+                    $table .= '<tr><td>' . $row['casino'] . '</td><td>' .  [id,grouping,casino,game, 
+                        schedule,cost,fee_percent,s_points, notes] . '</td></tr>';
+                }                
+                    $table .= '</table>';
+                  return $table;  
+         
+             
+         }   
             
-            
-         if($res = mysqli_query($conn, $sql)){ 
-            
-             if(mysqli_num_rows($res) > 0){ 
-                echo "<table><tr><th>id</th><th>grouping</th><th>casino</th><th>cost</th><th>game</th><th>schedule</th>
-                <th>fee_percent</th><th>s_points</th><th>notes</th></tr>";
-                echo "<tr>"; 
-                echo "</tr>";    
-                 
-            
-             while($row = mysqli_fetch_array($res)){ 
-                echo "<tr><td>". $row["id"]. "</td><td>". $row["grouping"]."</td><td>"
-                . $row["casino"]. "</td><td>". $row["cost"]. 
-                "</td><td>". $row["game"]. "</td><td>". $row["schedule"]."</td><td>".
-                $row["fee_percent"]."</td><td>". $row["s_points"]."</td><td>". $row["notes"]."</tr>";
-                echo "</tr>"; 
-                
-        } 
-                echo "</table>"; 
-                mysqli_free_result($res); 
-    }           else{ 
-                 echo "No Matching records are found."; 
-    } 
-        }       else{ 
-                 echo "ERROR: Could not able to execute $sql. "  
-                                . mysqli_error($conn); 
-} 
-            mysqli_close($conn); 
+     }       
 }
+
+ $pokerTable = new CasinoTable(); 
+            echo $pokerTable-> getTable(); 
+            
+         
+            
+           
