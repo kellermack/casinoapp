@@ -2,13 +2,7 @@
 // load DB
 require('Database.class.php');
 $database = new Database();
-// get casino names
-$casinoNames = $database->getCasinoNames();
-// selected casino name if they submitted the form
-$selectedCasino = '';
-if (isset($_POST['casinoName'])) {
-    $selectedCasino = $_POST['casinoName'];
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -22,8 +16,8 @@ if (isset($_POST['casinoName'])) {
     table, th, td {
     border: 1px solid black;
 }
-</style>
-    
+    </style>
+ 
 </head>
 
 <body>
@@ -37,30 +31,65 @@ if (isset($_POST['casinoName'])) {
     <!-- it's good to have labels for your form elements -->
     <label for="casinoName">Choose your casino</label>
     <br>
+    
     <select id="casinoName" name="casinoName">
         <!-- set the default "all" option to 0 so if they pick all it comes through as just "0" and is easier to work with -->
         <option value="0">-All-</option>
         
         <?php
+        // get casino names
+        $casinoNames = $database->getCasinoNames();
+        // selected casino name if they submitted the form
+        $selectedCasino = isset($_POST['casinoName']) ? $_POST['casinoName'] : '';
+
         // loop through the casino names
         foreach ($casinoNames as $casinoName) {
             // here we will add selected to the <option> html tag if this is our selected casino
             // this way the dropdown doesn't reset every time we submit the form
-            $selected = '';
-            if ($selectedCasino == $casinoName) {
-                $selected = 'selected';
-            }
+            $selected = ($selectedCasino == $casinoName) ? 'selected' : '';
             echo "<option value=\"$casinoName\" $selected>$casinoName</option>";
         }
         ?>
+        <?php 
+        // get casino dates
+        $casinoDates = $database->getCasinoDates();
+        // selected casino date if they submitted the form
+        $selectedDates = isset($_POST['casinoDate']) ? $_POST['casinoDate'] : '';
+
+        // loop through the casino dates
+        foreach ($casinoDates as $casinoDate) {
+            // here we will add selected to the <option> html tag if this is our selected casino
+            // this way the dropdown doesn't reset every time we submit the form
+            $selected = ($selectedDates == $casinoDate) ? 'selected' : '';
+                
+        }
+        ?>
+        
+        
+        
+        
+        
+        
     </select>
+    
+    
 
-    <div id="buttons">
-        <input type="submit" name="casino"><br>
-    </div>
+    <input type="date" 
+        name="casinoDate" 
+        value="<?php echo (isset($_POST['casinoDate']) ? $_POST['casinoDate'] : ''); ?>"
+        min="2018-05-25"
+        max="2018-07-01">
 
-    <div>
-        <?php
+       <button id="filter">Search</button>
+    <br>
+    
+</form>      
+
+    
+
+<div>
+    <?php
+       
         // an example showing we know what was selected
         // we can do an if here because $selectedCasino will be null if nothing was submitted
         // or 0 if they picked -ALL-
@@ -71,54 +100,79 @@ if (isset($_POST['casinoName'])) {
         ?>
  
         <?php
-        $conn = mysqli_connect("localhost", "root", "", "vegaspoker"); 
-  
-            if($conn === false){ 
-                 die("ERROR: Could not connect. " 
-                . mysqli_connect_error()); 
-} 
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "vegaspoker";
         
-        $sql = "SELECT * FROM tournaments";
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        
+        if ($conn->connect_error) {
+            die("Connection Failed: " . $conn->connect_error);
+        }
         
         
        
+        
+        
+        // load html table
+        // I switched the and to or in the casinoDate $sql. 
        
-        if($res = mysqli_query($conn, $sql)){ 
-            if(mysqli_num_rows($res) > 0){ 
-                echo "<table><tr><th>id</th><th>grouping</th><th>casino</th><th>cost</th><th>game</th><th>schedule</th>
-                <th>fee_percent</th><th>s_points</th><th>notes</th></tr>";
-            echo "<tr>"; 
+        $sql = "SELECT * FROM tournaments WHERE true";
+        if(isset($_POST['casinoName'])) {
+            $sql .= " and casino = '" . $_POST['casinoName'] . "'";
+        }
+        if(isset($_POST['casinoDate']))  {
+            $sql .= " or schedule BETWEEN '".$_POST['casinoDate']
+                ." 00:00:00.00' AND '".$_POST['casinoDate']." 23:59:59.999'"; 
+                    
+        }
+        
+        
+        
+        
+        
+        $result = $conn->query($sql); 
+        if($result == mysqli_query($conn, $sql)){
+            if(mysqli_num_rows($result) > 0){ 
+                echo "<table>";
+                echo "<tr>";
+                echo "<th>id</th>";
+                echo "<th>grouping</th>";
+                echo "<th>casino</th>";
+                echo "<th>cost</th>";
+                echo "<th>game</th>";
+                echo "<th>schedule</th>";
+                echo "<th>fee_percent</th>";
+                echo "<th>s_points</th>";
+                echo "<th>notes</th>";
+                echo "</tr>";
                 
-                 
-            echo "</tr>"; 
-        while($row = mysqli_fetch_array($res)){ 
-            echo "<tr><td>". $row["id"]. "</td><td>". $row["grouping"]."</td><td>"
-                    . $row["casino"]. "</td><td>". $row["cost"]. 
-                        "</td><td>". $row["game"]. "</td><td>". $row["schedule"]."</td><td>".
-        $row["fee_percent"]."</td><td>". $row["s_points"]."</td><td>". $row["notes"]."</tr>";
+                if($result->num_rows > 0) { 
+                    
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr>";
+                    echo "<td>" . $row["id"]. "</td>";
+                    echo "<td>".$row["grouping"]."</td>";
+                    echo "<td>" . $row["casino"]. "</td>";
+                    echo "<td>". $row["cost"]. "</td>";
+                    echo "<td>". $row["game"]. "</td>";
+                    echo "<td>". $row["schedule"]."</td>";
+                    echo "<td>". $row["fee_percent"]."</td>";
+                    echo "<td>". $row["s_points"]."</td>";
+                    echo "<td>". $row["notes"]."</tr>";
+                    echo "</tr>"; 
                 
-            echo "</tr>"; 
-        } 
-        echo "</table>"; 
-        mysqli_free_result($res); 
-    } else{ 
-        echo "No Matching records are found."; 
-    } 
-        } else{ 
-         echo "ERROR: Could not able to execute $sql. "  
-                                . mysqli_error($conn); 
-} 
-  
-mysqli_close($conn); 
-?> 
-          
+                    
+                }
+                
+               }
+            }        
+        }
+        
+    ?> 
+</div>
 
-
-
-    <!-- end of jason edits. we dont need all the forms on this page, they should be combined into one
-    that way we can just send all the filters they select at the same time -->
-
-   </form>      
     </body>
 </html>         
          
