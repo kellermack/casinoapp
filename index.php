@@ -79,6 +79,16 @@ $database = new Database();
         value="<?php echo (isset($_POST['casinoDate']) ? $_POST['casinoDate'] : ''); ?>"
         min="2018-05-25"
         max="2018-07-01">
+    
+    <select name="s_points">
+        <option value="0+">0+</option>
+        <option value="50+">50+</option>
+        <option value="75+">75+</option>
+        <option value="100+">100+</option>
+        value="<?php echo (isset($_POST['s_point']) ? $_POST['s_point'] : ''); ?>"
+        
+        
+    </select>
 
        <button id="filter">Search</button>
     <br>
@@ -125,7 +135,10 @@ $database = new Database();
         if(isset($_POST['casinoDate']))  {
             $sql .= " or schedule BETWEEN '".$_POST['casinoDate']
                 ." 00:00:00.00' AND '".$_POST['casinoDate']." 23:59:59.999'"; 
-                    
+        }
+        if(isset($_POST['s_point'])) {
+             $sql .= " and s_points = '" . $_POST['s_point'] . "'";
+                  
         }
         
         
