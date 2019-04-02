@@ -73,6 +73,53 @@ class Database
         // return the result
         return $casinos;
     }
+    
+    
+    
+        public function getCasinoDates()
+    {
+        // make the sql query
+        $sql = 'SELECT DISTINCT schedule FROM ' . self::TOURNAMENT_TABLE;
+
+        // run it
+        $result = $this->query($sql);
+
+        // get an empty array to hold the results
+        $schedules = [];
+
+        // loop through the results
+        foreach ($result as $row) {
+            // results come back one row at a time
+            // each row is an array with the column names as the array keys
+            $schedules[] = $row['schedule']; // grabs the schedule column value from each row and puts it in our array
+        }
+
+        // return the result
+        return $schedules;
+    }
+     
+    
+    
+    public function getS_points()
+    {
+        // make the sql query
+        $sql = 'SELECT DISTINCT s_points FROM ' . self::TOURNAMENT_TABLE;
+
+        // run it
+        $result = $this->query($sql);
+
+        // get an empty array to hold the results
+        $s_points = [];
+
+        // loop through the results
+        foreach ($result as $row) {
+            // results come back one row at a time
+            // each row is an array with the column names as the array keys
+            $s_points[] = $row['s_point']; // grabs the s_points column value from each row and puts it in our array
+        }
+
+        // return the result
+        return $s_points;
 
     /**
      * Create table and import all in one step
