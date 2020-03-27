@@ -65,9 +65,7 @@ $database = new Database();
         }
         ?>
         
-        
-   <?php
-        //try to add a save feature for logins to keep casinos
+
         
         
         

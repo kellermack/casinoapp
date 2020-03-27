@@ -120,6 +120,7 @@ class Database
 
         // return the result
         return $s_points;
+    }
 
     /**
      * Create table and import all in one step
