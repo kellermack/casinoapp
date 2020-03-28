@@ -4,6 +4,7 @@ class Database
 {
 
     const TOURNAMENT_TABLE = 'tournaments';
+    const USER_TABLE = 'users';
     const IMPORT_FOLDER = 'import';
     const ARCHIVE_FOLDER = 'archive';
     const CONFIG_FILE = 'config.php';
@@ -128,7 +129,25 @@ class Database
     public function install()
     {
         $this->createTournamentTable();
+        $this->createUserTable();
         $this->import();
+    }
+
+    /**
+     * Generate the table if it doesn't already exist in our DB
+     *
+     * @throws Exception
+     */
+    private function createUserTable()
+    {
+        $sql = 'CREATE TABLE IF NOT EXISTS ' . self::USER_TABLE . '
+            (
+                `id` INT(11) NOT NULL AUTO_INCREMENT,
+                `username` VARCHAR(64),
+                `password` VARCHAR(64),
+                PRIMARY KEY (`id`)
+            );';
+        $this->query($sql);
     }
 
     /**
