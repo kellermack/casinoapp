@@ -5,6 +5,7 @@ class Database
 
     const TOURNAMENT_TABLE = 'tournaments';
     const USER_TABLE = 'users';
+    const USER_TO_TOURNAMENT_TABLE = 'user_tournaments';
     const IMPORT_FOLDER = 'import';
     const ARCHIVE_FOLDER = 'archive';
     const CONFIG_FILE = 'config.php';
@@ -130,7 +131,27 @@ class Database
     {
         $this->createTournamentTable();
         $this->createUserTable();
+        $this->createUserToTournamentsTable();
         $this->import();
+    }
+
+    /**
+     * Generate the table if it doesn't already exist in our DB
+     *
+     * @throws Exception
+     */
+    private function createUserToTournamentsTable()
+    {
+        $sql = 'CREATE TABLE IF NOT EXISTS ' . self::USER_TO_TOURNAMENT_TABLE . '
+            (
+                `id` INT(11) NOT NULL AUTO_INCREMENT,
+                `tournament_id` INT(11),
+                `user_id` INT(11),
+                PRIMARY KEY (`id`),
+                FOREIGN KEY (`tournament_id`) REFERENCES '. self::TOURNAMENT_TABLE . '(`id`),
+                FOREIGN KEY (`user_id`) REFERENCES '. self::USER_TABLE . '(`id`)
+            );';
+        $this->query($sql);
     }
 
     /**
