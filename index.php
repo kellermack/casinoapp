@@ -12,11 +12,7 @@ $database = new Database();
 <head>
     <meta charset="UTF-8">
     <title>Las Vegas Summer Poker Tour</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="awesomecss.css">
 
 </head>
 

@@ -236,7 +236,7 @@ class Database
         // TODO: that way our import function here remains neat and tidy
 
         // now clear the DB table
-        $sql = 'TRUNCATE ' . self::TOURNAMENT_TABLE;
+        $sql = 'DELETE FROM ' . self::TOURNAMENT_TABLE;
         $this->query($sql);
 
 
