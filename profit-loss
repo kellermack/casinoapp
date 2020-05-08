@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profit/Loss</title>
+	<style>
+ body { 
+  background: url(dollarsign.jpg) no-repeat; 
+    
+}
+
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+<h1>My Profit/Loss in all sanctioned WSOP Events from 2018-Present.</h1>
+
+
+
+<table>
+  <tr>
+    <th>Buy-In</th>
+    <th>Cash</th>
+    <th>Profit/Loss</th>
+  </tr>
+  <tr>
+    <td>Big 50 $500</td>
+    <td>No</td>
+    <td>($500)</td>
+  </tr>
+  <tr>
+    <td>Deep Stack $600</td>
+    <td>Yes</td>
+    <td>$1257</td>
+  </tr>
+  <tr>
+    <td>Circuit Event $400</td>
+    <td>No</td>
+    <td>($400)</td>
+  </tr>
+  <tr>
+  	<th>Total</th>
+  	<th> 1 </th>
+  	<th>+$357</th>
+  </tr>
+  
+</table>
+</body>
+</html>
