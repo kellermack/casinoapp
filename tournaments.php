@@ -15,6 +15,7 @@ $database = new Database();
     <link rel="stylesheet" type="text/css" href="awesomecss.css">
 
 </head>
+<a href="vegas.html">Home</a>
 
 <body>
 
@@ -22,7 +23,7 @@ $database = new Database();
 
 <h1>Sort by Casino Name</h1>
 
-<form action="index.php" method="post">
+<form action="tournaments.php" method="post">
 
     <!-- it's good to have labels for your form elements -->
     <label for="casinoName">Choose your casino</label>
@@ -132,7 +133,7 @@ $database = new Database();
     $result = $conn->query($sql);
     if ($result == mysqli_query($conn, $sql)) {
         if (mysqli_num_rows($result) > 0) {
-            echo "<form method='post' action='index.php'>";
+            echo "<form method='post' action='tournaments.php'>";
             echo "<table>";
             echo "<tr>";
             echo "<th>select</th>";
